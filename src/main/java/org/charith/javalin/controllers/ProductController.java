@@ -16,7 +16,14 @@ public class ProductController {
     }
 
     public void getAllProducts(Context ctx) {
+        String category = ctx.queryParam("category");
+
         try {
+            if(category != null){
+                System.out.println(category);
+                ctx.json(productService.getAllProductsByCategory(category));
+                return;
+            }
             ctx.json(productService.getAllProducts());
         } catch (Exception e) {
             System.out.println(e.getMessage());

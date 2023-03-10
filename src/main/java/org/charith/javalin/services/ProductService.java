@@ -46,4 +46,8 @@ public class ProductService {
         }
         productDAO.deleteProduct(id);
     }
+
+    public List<Product> getAllProductsByCategory(String category) throws SQLException {
+        return productDAO.getProductsByCategory(category);
+    }
 }

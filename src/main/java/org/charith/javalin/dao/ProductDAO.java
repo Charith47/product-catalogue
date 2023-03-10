@@ -118,5 +118,37 @@ public class ProductDAO {
         statement.executeUpdate();
         connection.close();
     }
+
+    public List<Product> getProductsByCategory(String productCategory) throws SQLException{
+        List<Product> products = new ArrayList<>();
+
+        String query = "SELECT * FROM products WHERE category = ?";
+        Connection connection = DBHelper.getConnection();
+
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, productCategory);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String description = resultSet.getString("description");
+            int price = resultSet.getInt("price");
+            int quantity = resultSet.getInt("quantity");
+            String image_url = resultSet.getString("image_url");
+            String category = resultSet.getString("category");
+            String brand = resultSet.getString("brand");
+            Timestamp created_at = resultSet.getTimestamp("created_at");
+
+            Product product = new Product(id, name, description, price, quantity, image_url, category, brand, created_at);
+
+            products.add(product);
+        }
+
+        connection.close();
+        return products;
+    }
 }
 

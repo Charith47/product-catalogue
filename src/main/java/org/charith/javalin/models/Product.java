@@ -1,7 +1,5 @@
 package org.charith.javalin.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.sql.Timestamp;
 
 public class Product {

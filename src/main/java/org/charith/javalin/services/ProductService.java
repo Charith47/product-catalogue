@@ -1,5 +1,6 @@
 package org.charith.javalin.services;
 
+import com.google.gson.JsonObject;
 import org.charith.javalin.models.Product;
 import org.charith.javalin.dao.ProductDAO;
 import org.charith.javalin.exceptions.NotFoundException;
@@ -49,5 +50,15 @@ public class ProductService {
 
     public List<Product> getAllProductsByCategory(String category) throws SQLException {
         return productDAO.getProductsByCategory(category);
+    }
+
+    public JsonObject getProductSummary() throws SQLException {
+        JsonObject rs = productDAO.getProductSummary();
+
+        if (rs.isEmpty()) {
+            throw new NotFoundException("Could not retrieve summary");
+        }
+
+        return rs;
     }
 }

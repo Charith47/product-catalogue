@@ -1,5 +1,6 @@
 package org.charith.javalin.controllers;
 
+import com.google.gson.JsonObject;
 import io.javalin.http.Context;
 
 import org.charith.javalin.exceptions.NotFoundException;
@@ -19,7 +20,7 @@ public class ProductController {
         String category = ctx.queryParam("category");
 
         try {
-            if(category != null){
+            if (category != null) {
                 System.out.println(category);
                 ctx.json(productService.getAllProductsByCategory(category));
                 return;
@@ -76,6 +77,19 @@ public class ProductController {
         } catch (NotFoundException e) {
             ctx.status(404);
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            ctx.status(500);
+        }
+    }
+
+    public void getProductSummary(Context ctx) {
+        try {
+            JsonObject rs = productService.getProductSummary();
+            ctx.status(200);
+            ctx.json(rs.toString()); // Fix this weirdness
+        } catch (NotFoundException e) {
+            ctx.status(404);
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             ctx.status(500);
         }

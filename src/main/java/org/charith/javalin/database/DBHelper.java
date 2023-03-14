@@ -17,10 +17,8 @@ public class DBHelper {
             connection = DriverManager.getConnection(DB_URL);
         } catch (SQLException e) {
             System.out.println("ERROR:(SQL) " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e.getMessage());
-        }
-
+        } 
+        
         return connection;
     }
 

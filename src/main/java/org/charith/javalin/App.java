@@ -26,6 +26,8 @@ public class App {
         app.put("/products/{id}", productController::updateProduct);
         app.delete("/products/{id}", productController::deleteProduct);
 
+        app.get("/summary", productController::getProductSummary);
+
         app.start(3000);
     }
 }

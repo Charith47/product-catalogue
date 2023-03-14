@@ -1,5 +1,7 @@
 package org.charith.javalin.dao;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import org.charith.javalin.models.Product;
 
 import java.sql.*;
@@ -76,10 +78,10 @@ public class ProductDAO {
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1, product.getName());
-        statement.setString(2,product.getDescription());
+        statement.setString(2, product.getDescription());
         statement.setInt(3, product.getPrice());
         statement.setInt(4, product.getQuantity());
-        statement.setString(5,product.getImageUrl());
+        statement.setString(5, product.getImageUrl());
         statement.setString(6, product.getCategory());
         statement.setString(7, product.getBrand());
         statement.setTimestamp(8, product.getCreatedAt());
@@ -95,10 +97,10 @@ public class ProductDAO {
         PreparedStatement statement = connection.prepareStatement(query);
 
         statement.setString(1, product.getName());
-        statement.setString(2,product.getDescription());
+        statement.setString(2, product.getDescription());
         statement.setInt(3, product.getPrice());
         statement.setInt(4, product.getQuantity());
-        statement.setString(5,product.getImageUrl());
+        statement.setString(5, product.getImageUrl());
         statement.setString(6, product.getCategory());
         statement.setString(7, product.getBrand());
         statement.setTimestamp(8, product.getCreatedAt());
@@ -119,7 +121,7 @@ public class ProductDAO {
         connection.close();
     }
 
-    public List<Product> getProductsByCategory(String productCategory) throws SQLException{
+    public List<Product> getProductsByCategory(String productCategory) throws SQLException {
         List<Product> products = new ArrayList<>();
 
         String query = "SELECT * FROM products WHERE category = ?";
@@ -149,6 +151,29 @@ public class ProductDAO {
 
         connection.close();
         return products;
+    }
+
+    public JsonObject getProductSummary() throws SQLException {
+        JsonObject summary = new JsonObject();
+        Connection connection = DBHelper.getConnection();
+        Statement stmt = connection.createStatement();
+
+        String query = "SELECT * FROM product_summary;";
+        ResultSet rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            int numProducts = rs.getInt("item_count");
+            int numCategories = rs.getInt("category_count");
+            int totalQuantity = rs.getInt("total_quantity");
+            int totalValue = rs.getInt("total_price");
+
+            summary.add("numProducts", new JsonPrimitive(numProducts));
+            summary.add("numCategories", new JsonPrimitive(numCategories));
+            summary.add("totalQuantity", new JsonPrimitive(totalQuantity));
+            summary.add("totalValue", new JsonPrimitive(totalValue));
+        }
+
+        return summary;
     }
 }
 

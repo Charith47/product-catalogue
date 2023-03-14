@@ -8,7 +8,13 @@ import org.charith.javalin.services.ProductService;
 
 public class App {
     public static void main(String[] args) {
-        Javalin app = Javalin.create();
+        Javalin app = Javalin.create(config -> {
+            config.plugins.enableCors(cors -> {
+                cors.add(it -> {
+                    it.anyHost();
+                });
+            });
+        });
 
         app.get("/", ctx -> ctx.html("Hello from Server!"));
 
